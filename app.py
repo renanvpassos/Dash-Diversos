@@ -225,7 +225,7 @@ os.makedirs(DATA_DIR, exist_ok=True)
 def load_logs_by_period(start_date: date, end_date: date):
     try:
         response = (
-            supabase.table("atividades")
+            supabase.table("atividades_diversos")
             .select("*")
             .gte("date", start_date.isoformat())
             .lte("date", end_date.isoformat())
@@ -248,7 +248,7 @@ def get_existing_signatures_for_sheet(sheet_name: str, start_date: date, end_dat
     """
     try:
         response = (
-            supabase.table("atividades")
+            supabase.table("atividades_diversos")
             .select("timestamp, referencia, digitador, mensagem")
             .eq("sheet_name", sheet_name)
             .gte("date", start_date.isoformat())
@@ -271,7 +271,7 @@ def add_log_entries_bulk(logs_list):
     for i in range(0, len(logs_list), chunk_size):
         chunk = logs_list[i : i + chunk_size]
         try:
-            supabase.table("atividades").insert(chunk).execute()
+            supabase.table("atividades_diversos").insert(chunk).execute()
         except Exception as e:
             st.error(f"Erro ao salvar lote de registros no Supabase: {e}")
 
